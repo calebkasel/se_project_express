@@ -49,6 +49,10 @@ module.exports.deleteItem = (req, res) => {
             handleErrors(req, res, err);
           });
       }
+    })
+    .catch((err) => {
+      console.error(err);
+      handleErrors(req, res, err);
     });
 };
 
