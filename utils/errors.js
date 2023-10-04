@@ -1,29 +1,26 @@
-const Error_400 = 400;
-const Error_403 = 403;
-const Error_404 = 404;
-const Error_500 = 500;
+const ERROR_400 = 400;
+const ERROR_403 = 403;
+const ERROR_404 = 404;
+const ERROR_500 = 500;
 
 const handleErrors = (req, res, err) => {
-  console.log(err.name, "This is the error name");
-  console.log(err.message, "This is the error message");
-
   if (err.name === "DocumentNotFoundError") {
-    return res.status(Error_404).send({ message: "No document found" });
+    return res.status(ERROR_404).send({ message: "No document found" });
   }
 
   if (err.name === "ValidationError" || err.name === "CastError") {
-    return res.status(Error_400).send({ message: "Invalid Data" });
+    return res.status(ERROR_400).send({ message: "Invalid Data" });
   }
 
   return res
-    .status(Error_500)
+    .status(ERROR_500)
     .send({ message: "An error has occurred on the server" });
 };
 
 module.exports = {
-  Error_400,
-  Error_403,
-  Error_404,
-  Error_500,
+  ERROR_400,
+  ERROR_403,
+  ERROR_404,
+  ERROR_500,
   handleErrors,
 };
