@@ -1,4 +1,5 @@
 const Error_400 = 400;
+const Error_403 = 403;
 const Error_404 = 404;
 const Error_500 = 500;
 
@@ -21,6 +22,7 @@ const handleErrors = (req, res, err) => {
 
 module.exports = {
   Error_400,
+  Error_403,
   Error_404,
   Error_500,
   handleErrors,
