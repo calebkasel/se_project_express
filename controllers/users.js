@@ -19,9 +19,12 @@ module.exports.getUser = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, avatar } = req.body;
+  const { name, avatar, email, password } = req.body;
 
-  User.create({ name, avatar })
+  User.findOne({email})
+    .then((emailFoud))
+  bcrypt.hash(req.body.password, )
+  User.create({ name, avatar, email, password })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       handleErrors(req, res, err);
