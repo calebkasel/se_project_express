@@ -10,12 +10,12 @@ const handleErrors = (req, res, err) => {
     return res.status(ERROR_404).send({ message: "No document found" });
   }
 
-  if (err.name === "ValidationError" || err.name === "CastError") {
-    return res.status(ERROR_400).send({ message: "Invalid Data" });
+  if (err.message === "Incorrect email or password") {
+    return res.status(ERROR_401).send({ message: "Email or Password not found" });
   }
 
-  if (err.name === "AuthorizationError") {
-    return res.status(ERROR_401).send({ message: "No user found" });
+  if (err.name === "ValidationError" || err.name === "CastError") {
+    return res.status(ERROR_400).send({ message: "Invalid Data" });
   }
 
   return res

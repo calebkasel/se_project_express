@@ -27,10 +27,7 @@ module.exports.createUser = (req, res) => {
   if (!email || !password) {
     return res
       .status(ERROR_401)
-      .send({ message: "No user found" })
-      .catch((err) => {
-        handleErrors(req, res, err);
-      });
+      .send({ message: "No user found" });
   }
   return User.findOne({ email }).then((user) => {
     if (user) {
@@ -40,7 +37,7 @@ module.exports.createUser = (req, res) => {
     }
 
     return bcrypt
-      .hash(req.body.password, 10)
+      .hash(password, 10)
       .then((hash) => {
         User.create({ name, avatar, email, password: hash })
           .then((newUser) =>
@@ -63,7 +60,7 @@ module.exports.createUser = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findByCredentials(email, password)
+  User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -71,6 +68,7 @@ module.exports.login = (req, res) => {
       res.send({ token });
     })
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
