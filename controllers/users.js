@@ -1,6 +1,6 @@
-const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const User = require("../models/user");
 const {
   handleErrors,
   ERROR_400,
@@ -36,8 +36,8 @@ module.exports.createUser = (req, res) => {
   if (!email || !password) {
     return res.status(ERROR_400).send({ message: "No user found" });
   }
-  return User.findOne({ email }).then((user) => {
-    if (user) {
+  return User.findOne({ email }).then((userFound) => {
+    if (userFound) {
       return res
         .status(ERROR_409)
         .send({ message: "That email already exists" });
