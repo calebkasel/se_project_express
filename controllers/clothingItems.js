@@ -27,6 +27,10 @@ module.exports.deleteItem = (req, res) => {
   ClothingItem.findById(req.params.itemId)
     .orFail()
     .then((item) => {
+      console.log(item);
+      console.log(item.owner);
+      console.log(req.user._id);
+
       if (!item.owner.equals(req.user._id)) {
         res.status(ERROR_403).send({ message: "Forbidden" });
       } else {
@@ -36,12 +40,14 @@ module.exports.deleteItem = (req, res) => {
             res.send({ data: itemDelete });
           })
           .catch((err) => {
+            console.log("error in find by and delete");
             console.error(err);
             handleErrors(req, res, err);
           });
       }
     })
     .catch((err) => {
+      console.log("error in find by and id");
       console.error(err);
       handleErrors(req, res, err);
     });

@@ -1,13 +1,9 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
-const { ERROR_401, ERROR_400 } = require("../utils/errors");
+const { ERROR_401 } = require("../utils/errors");
 
 module.exports.handleAuthError = (req, res, next) => {
   const { authorization } = req.headers;
-
-  // if (!email || !password) {
-  //   return res.status(ERROR_400).send({ message: "Invalid Data" });
-  // }
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return res.status(ERROR_401).send({ message: "Authorization required" });
