@@ -9,6 +9,7 @@ module.exports.createItem = (req, res) => {
       res.send({ data: item });
     })
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
@@ -17,6 +18,7 @@ module.exports.getItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.send({ data: items }))
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
@@ -34,11 +36,13 @@ module.exports.deleteItem = (req, res) => {
             res.send({ data: itemDelete });
           })
           .catch((err) => {
+            console.error(err);
             handleErrors(req, res, err);
           });
       }
     })
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
@@ -52,6 +56,7 @@ module.exports.likeItem = (req, res) => {
     .orFail()
     .then((item) => res.send({ data: item }))
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
@@ -65,6 +70,7 @@ module.exports.dislikeItem = (req, res) => {
     .orFail()
     .then((item) => res.send({ data: item }))
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };

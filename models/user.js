@@ -29,11 +29,11 @@ const userSchema = new mongoose.Schema({
       },
       message: "You must enter a valid email",
     },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-    },
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
   },
 });
 

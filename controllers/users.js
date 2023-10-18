@@ -1,13 +1,19 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { handleErrors, ERROR_400, ERROR_409, ERROR_401 } = require("../utils/errors");
+const {
+  handleErrors,
+  ERROR_400,
+  ERROR_409,
+  ERROR_401,
+} = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
@@ -17,6 +23,7 @@ module.exports.getUser = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
@@ -25,9 +32,7 @@ module.exports.createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(ERROR_400)
-      .send({ message: "No user found" });
+    return res.status(ERROR_400).send({ message: "No user found" });
   }
   return User.findOne({ email }).then((user) => {
     if (user) {
@@ -40,18 +45,21 @@ module.exports.createUser = (req, res) => {
       .hash(password, 10)
       .then((hash) => {
         User.create({ name, avatar, email, password: hash })
-          .then((newUser) =>
+          .then((user) =>
             res.send({
-              name: newUser.name,
-              avatar: newUser.avatar,
-              email: newUser.email,
+              name,
+              avatar,
+              email,
+              _id: user._id,
             }),
           )
           .catch((err) => {
+            console.error(err);
             handleErrors(req, res, err);
           });
       })
       .catch((err) => {
+        console.error(err);
         handleErrors(req, res, err);
       });
   });
@@ -68,7 +76,8 @@ module.exports.login = (req, res) => {
       res.status(200).send({ token });
     })
     .catch((err) => {
-      res.status(ERROR_401).send({ message: "Incorrect email or password"});
+      console.error(err);
+      res.status(ERROR_401).send({ message: "Incorrect email or password" });
     });
 };
 
@@ -86,6 +95,7 @@ module.exports.updateUser = (req, res) => {
       res.send({ data: user });
     })
     .catch((err) => {
+      console.error(err);
       handleErrors(req, res, err);
     });
 };
