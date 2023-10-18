@@ -1,5 +1,5 @@
 const ERROR_400 = 400;
-const ERROR_401 = 400;
+const ERROR_401 = 401;
 const ERROR_403 = 403;
 const ERROR_404 = 404;
 const ERROR_409 = 409;
@@ -10,12 +10,12 @@ const handleErrors = (req, res, err) => {
     return res.status(ERROR_404).send({ message: "No document found" });
   }
 
-  if (err.message === "Incorrect email or password") {
-    return res.status(ERROR_401).send({ message: "Email or Password not found" });
-  }
-
   if (err.name === "ValidationError" || err.name === "CastError") {
     return res.status(ERROR_400).send({ message: "Invalid Data" });
+  }
+
+  if (err.message === "Incorrect email or password") {
+    return res.status(ERROR_401).send({ message: "Email or Password not found" });
   }
 
   return res

@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { handleErrors, ERROR_401, ERROR_409 } = require("../utils/errors");
+const { handleErrors, ERROR_400, ERROR_409, ERROR_401 } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
 module.exports.getUsers = (req, res) => {
@@ -26,7 +26,7 @@ module.exports.createUser = (req, res) => {
 
   if (!email || !password) {
     return res
-      .status(ERROR_401)
+      .status(ERROR_400)
       .send({ message: "No user found" });
   }
   return User.findOne({ email }).then((user) => {
@@ -65,11 +65,10 @@ module.exports.login = (req, res) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.send({ token });
+      res.status(200).send({ token });
     })
     .catch((err) => {
-      console.error(err);
-      handleErrors(req, res, err);
+      res.status(ERROR_401).send({ message: "Incorrect email or password"});
     });
 };
 
